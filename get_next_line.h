@@ -6,12 +6,16 @@
 /*   By: yael-kha <yael-kha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/11 14:28:13 by yael-kha          #+#    #+#             */
-/*   Updated: 2025/12/11 14:41:04 by yael-kha         ###   ########.fr       */
+/*   Updated: 2025/12/17 17:01:34 by yael-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef	GET_NEXT_LINE_H
+#ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
+
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 42
+# endif
 
 char	*ft_strchr(const char *s, int c);
 char	*ft_strdup(const char *s);
