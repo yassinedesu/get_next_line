@@ -6,7 +6,7 @@
 /*   By: yael-kha <yael-kha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/20 01:41:17 by yael-kha          #+#    #+#             */
-/*   Updated: 2025/12/20 15:43:42 by yael-kha         ###   ########.fr       */
+/*   Updated: 2025/12/25 01:47:47 by yael-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ char	*fill_line(int fd, char *what_left, char *buffer)
 	char	*tmp;
 	int		was_read;
 
+	if (BUFFER_SIZE <= 0)
+		return (NULL);
 	while (!ft_strchr(what_left, '\n'))
 	{
 		was_read = read(fd, buffer, BUFFER_SIZE);
@@ -36,12 +38,6 @@ char	*fill_line(int fd, char *what_left, char *buffer)
 	return (what_left);
 }
 
-char	*handling_fails(char **buffer)
-{
-	free(*buffer);
-	return (NULL);
-}
-
 char	*set_line(char *buffer_line, char **left_c)
 {
 	char	*line;
@@ -54,11 +50,11 @@ char	*set_line(char *buffer_line, char **left_c)
 		i++;
 	line = ft_substr(buffer_line, 0, i);
 	if (!line)
-		return (handling_fails(&buffer_line));
+		return (free(buffer_line), NULL);
 	*left_c = ft_substr(buffer_line, i, ft_strlen(buffer_line) - i);
 	free(buffer_line);
 	if (!*left_c)
-		return (handling_fails(&line));
+		return (free(line), NULL);
 	if ((*left_c)[0] == '\0')
 	{
 		free(*left_c);
@@ -81,7 +77,7 @@ char *get_next_line(int fd)
 		return (NULL);
 	buffer = malloc((size_t)BUFFER_SIZE + 1);
 	if (!buffer)
-		return (NULL);
+		return (free(what_left), what_left = NULL, NULL);
 	what_left = fill_line(fd, what_left, buffer);
 	free(buffer);
 	if (!what_left || what_left[0] == '\0')
@@ -102,7 +98,8 @@ int main()
 
 	if (fd == -1)
 		return (1);
-
+	// line = get_next_line(fd);
+	// free(line);
 	while ((line = get_next_line(fd)) != NULL)
 	{
 		printf("%s", line);
